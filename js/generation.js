@@ -67,36 +67,6 @@ var txt2pano_out_items = [
 
 // ];
 
-// function txt2pano_in_carousel_item_template(item) {
-//     return `<div class="x-card" style="min-width: 100px">
-//                 <div style="width: 100%; aspect-ratio: 2/1">
-//                     <img src="assets/txt2pano_in/${item.image}" 
-//                          alt="${item.prompt}" 
-//                          style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
-//                 </div>
-//                 <div class="caption">
-//                     <div class="x-handwriting">
-//                         ${item.prompt}
-//                     </div>
-//                 </div>
-//             </div>`;
-// }
-
-
-// function txt2pano_out_carousel_item_template(item) {
-//     return `<div class="x-card" style="min-width: 100px">
-//                 <div style="width: 100%; aspect-ratio: 2/1">
-//                     <img src="assets/txt2pano_out/${item.image}" 
-//                          alt="${item.prompt}" 
-//                          style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
-//                 </div>
-//                 <div class="caption">
-//                     <div class="x-handwriting">
-//                         ${item.prompt}
-//                     </div>
-//                 </div>
-//             </div>`;
-// }
 
 function txt2pano_in_carousel_item_template(item) {
     return `<div class="x-card" style="min-width: 100px">
