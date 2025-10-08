@@ -1,0 +1,223 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DiT360: High-Fidelity Panoramic Image Generation via Hybrid Training</title>
+        <!-- <link rel="icon" href="favicon.png"> -->
+        <link rel="icon" href="icon.png">
+        <link rel="stylesheet" href="fonts/avenir-next/stylesheet.css">
+        <link rel="stylesheet" href="fonts/segoe-print/stylesheet.css">
+        <link rel="stylesheet" href="icons/style.css">
+        <link rel="stylesheet" href="css/window.css">
+        <link rel="stylesheet" href="css/carousel.css">
+        <link rel="stylesheet" href="css/selection_panel.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/window.js"></script>
+        <script src="js/carousel.js"></script>
+        <script src="js/selection_panel.js"></script>
+        <script src="js/generation.js"></script>
+        <script src="js/editing.js"></script>
+        <script src="js/application.js"></script>
+		<script src="js/main.js"></script>
+        <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    </head>
+    <body>
+        <div id="main">
+            <!-- <div id="logo">
+                <video autoplay playsinline loop muted src="assets/logo.mp4" poster="assets/logo.jpg"></video>*
+            </div> -->
+            <div id="title" class="x-gradient-font">
+                <span style="font-size: 80px;">DiT360:</span><br>
+                <span style="font-size: 43px;">High-Fidelity Panoramic Image Generation via Hybrid Training</span>
+            </div>
+            <div id="authors">
+                <div><a class="link" href="https://scholar.google.com.hk/citations?user=riCXH64AAAAJ">Haoran Feng</a><sup>1,2*</sup></div>
+                <div><a class="link">Dizhe Zhang</a><sup>1*</sup></div>
+                <div><a class="link"> Xiangtai Li</a><sup>3</sup></div>
+                <div><a class="link">Bo Du</a><sup>4</sup></div>
+                <div><a class="link" href="https://scholar.google.com.hk/citations?user=SSI90d4AAAAJ">Lu Qi</a><sup>1,4✉</sup></div>
+            </div>
+            <div id="institution">
+                <div><sup>1</sup><a class="link" href="https://www.insta360.com/cn/">Insta360 Research</a></div>
+                <div><sup>2</sup><a class="link" href="https://www.tsinghua.edu.cn/en/">Tsinghua University</a></div>
+                <div><sup>3</sup><a class="link" href="https://www.ntu.edu.sg/">Nanyang Technological University</a></div>
+                <div><sup>4</sup><a class="link" href="https://www.whu.edu.cn/">Wuhan University</a></div>
+            </div>
+            <div id="institution">
+                <div><sup>*</sup>Equal Contribution</div>
+                <div><sup>✉</sup>Corresponding Authors</div>
+            </div>
+            <!-- <div class="x-center-text" style="font-size: 20px; font-weight: 700; color: #5f5f5f;">
+                CVPR 2025 Highlight
+            </div> -->
+            <!-- <div id="links">
+                <div><a id="paper" href="https://arxiv.org/pdf/2412.01506.pdf">Paper</a></div>
+                <div><a id="arxiv" href="https://arxiv.org/abs/2412.01506">Arxiv</a></div>
+                <div><a id="code" href="https://github.com/Microsoft/TRELLIS">Code</a></div>
+                <div><a id="demo" href="https://huggingface.co/spaces/Microsoft/TRELLIS">Demo</a></div>
+            </div> -->
+            <!-- <div class="x-center-text" style="font-size: 18px; font-weight: 600; color: #7a0e0e;"><i>
+                (Note: This is the only official webpage for the TRELLIS project)
+            </i></div> -->
+            <div id="teaser">
+                <!-- <div style="width: 100%;"><video autoplay playsinline loop muted src="assets/teaser.mp4" poster="assets/teaser.jpg"></video></div> -->
+                <img src="assets/teaser.png" alt="teaser" style="width: 100%;">
+            </div>
+            <div class="x-center-text" style="font-size: 20px; font-weight: 500; color: #3f3f3f;">
+                <b>TL;DR:</b> 
+                We propose <i><b>DiT360</b></i>, a two-level framework integrating <i><b>image-</b></i> and <i><b>token-level</b></i> strategies to enhance <i><b>perceptual realism</b></i> and <i><b>geometric fidelity</b></i> in panoramic image generation.
+            </div>
+            <div id="abstract" class="x-gradient-block">
+                In this work, we propose <span style="font-size: 16px; font-weight: 600;"><i>DiT360</i></span>, a DiT-based framework that performs hybrid training on perspective and panoramic data for panoramic image generation.
+                For the issues of maintaining geometric fidelity and photorealism in generation quality, we attribute the main reason to the lack of large-scale, high-quality, real-world panoramic data, where such a data-centric view differs from prior methods that focus on model design.
+                Basically, <span style="font-size: 16px; font-weight: 600;"><i>DiT360</i></span> has several key modules for inter-domain transformation and intra-domain augmentation, applied at both the pre-VAE image level and the post-VAE token level.
+                <span style="font-size: 16px; font-weight: 600;">At the image level</span>, we incorporate cross-domain knowledge through perspective image guidance and panoramic refinement, which enhance perceptual quality while regularizing diversity and photorealism.
+                <span style="font-size: 16px; font-weight: 600;">At the token level</span>, hybrid supervision is applied across multiple modules, which include circular padding for boundary continuity, yaw loss for rotational robustness, and cube loss for distortion awareness.
+                Extensive experiments on text-to-panorama, inpainting, and outpainting tasks demonstrate that our method achieves better boundary consistency and image fidelity across eleven quantitative metrics.
+            </div>
+            <!-- <p class="x-note">
+                <i>* Generated by</i> <span style="font-size: 16px; font-weight: 600;">T</span><span style="font-size: 12px; font-weight: 700;">RELLIS</span>, <i>using its</i> <span style="font-size: 16px; font-weight: 600;">image to 3D assets</span> <i>cabilities.</i>
+            </p>
+            <p class="x-note">
+                <i>The appearance and geometry shown in this page are rendered from 3D Gaussians and meshes, respectively.
+                GLB files are extracted by baking appearance from 3D Gaussians to meshes.</i>
+            </p> -->
+            <div class="x-section-title"><div class="x-gradient-font">Indoor Scene Generation <span style="font-size: 40px; font-weight:600;">|</span> Text to Panorama</div></div>
+            <div id="results-txt2pano_in"></div>
+            <div class="x-section-title"><div class="x-gradient-font">Outdoor Scene Generation <span style="font-size: 40px; font-weight:600;">|</span> Text to Panorama</div></div>
+            <div id="results-txt2pano_out"></div>
+            <div class="x-section-title"><div class="x-gradient-font">Editing <span style="font-size: 40px; font-weight:600;">|</span> Inpainting</div></div>
+            <div id="results-inpainting">
+                <img src="assets/inpainting/inpainting_00.png" alt="inpainting" style="width: 100%;">
+                <div class="caption">
+                    <div class="x-handwriting">
+                        A panoramic view of city skyline from the river.
+                    </div>
+                </div>
+                <img src="assets/inpainting/inpainting_01.png" alt="inpainting" style="width: 100%;">
+                <div class="caption">
+                    <div class="x-handwriting">
+                        Florence central plaza with historic buildings and fountains.
+                    </div>
+                </div>
+            </div>
+            <div class="x-section-title"><div class="x-gradient-font">Editing <span style="font-size: 40px; font-weight:600;">|</span> Outpainting</div></div>
+                <img src="assets/outpainting/outpainting_00.png" alt="outpainting" style="width: 100%;">
+                <div class="caption">
+                    <div class="x-handwriting">
+                        Petra, Jordan, with rock-cut architecture and desert surroundings.
+                    </div>
+                </div>
+                <img src="assets/outpainting/outpainting_01.png" alt="outpainting" style="width: 100%;">
+                <div class="caption">
+                    <div class="x-handwriting">
+                        Sydney Opera House with harbor and skyscrapers.
+                    </div>
+                </div>
+            <div id="results-outpainting"></div>
+
+            <!-- <div class="x-section-title"><div class="x-gradient-font">Editing <span style="font-size: 40px; font-weight:600;">|</span> Local Manipulation</div></div>
+            <p>
+                <span style="font-size: 16px; font-weight: 600;">T</span><span style="font-size: 12px; font-weight: 700;">RELLIS</span>
+                can manipulate targeted local regions of a given 3D asset according to given text or image prompts.
+            </p>
+            <div id="results-manipulation"></div>
+
+            <div class="x-section-title"><div class="x-gradient-font">Application <span style="font-size: 40px; font-weight:600;">|</span> 3D Art Designs</div></div>
+            <p>
+                Compositing the high-quality 3D assets generated by <span style="font-size: 16px; font-weight: 600;">T</span><span style="font-size: 12px; font-weight: 700;">RELLIS</span>,
+                complex and vibrant 3D art designs can be created with ease.
+            </p>
+            <div id="results-scene"></div> -->
+
+            <div class="x-section-title"><div class="x-gradient-font">Methodology</div></div>
+            <p>
+                <img src="assets/pipeline.png" alt="Pipeline of the method" style="width: 100%;">
+            </p>
+            <p>
+                Building upon Diffusion Transformer, we introduce <b><i>DiT360</i></b> for panoramic image generation, 
+                which adopts a hybrid paradigm to jointly exploit perspective and panoramic data through two training branches. 
+                The key modules enabling hybrid training are categorized into <b>image-level regularization</b> 
+                and <b>token-level supervision</b>. 
+            </p>
+            <p>
+                At the image level, <b>perspective image guidance</b> and <b>panoramic refinement</b> introduce cross-domain knowledge to enhance perceptual quality while regularizing diversity and photorealism. 
+                At the token level, hybrid supervision across multiple objectives is conducted, 
+                which includes <b>circular padding</b> for boundary continuity, 
+                <b>yaw loss</b> for rotational robustness, and <b>cube loss</b> for distortion awareness. 
+                Together, this hybrid design operates across multiple representation levels to achieve perceptual photorealism and geometric fidelity.
+            </p>
+
+            <!-- <div class="x-section-title"><div class="x-gradient-font">Citation</div></div>
+            <p>
+                If you find our work useful, please consider citing:
+            </p> -->
+            <!-- <p class="bibtex x-gradient-block">
+@article{xiang2024structured,
+    title   = {Structured 3D Latents for Scalable and Versatile 3D Generation},
+    author  = {Xiang, Jianfeng and Lv, Zelong and Xu, Sicheng and Deng, Yu and Wang, Ruicheng and 
+               Zhang, Bowen and Chen, Dong and Tong, Xin and Yang, Jiaolong},
+    journal = {arXiv preprint arXiv:2412.01506},
+    year    = {2024}
+}
+            </p> -->
+            <!-- <div style="height: 100px;"> </div>
+            <p class="x-note">
+                <b style="line-height: 32px;">Responsible AI Considerations</b><br>
+                <i>
+                    TRELLIS is purely a research project. Responsible AI considerations were factored into all stages. The datasets used in this paper are public and have been reviewed to ensure there is no personally identifiable information or harmful content. However, as these datasets are sourced from the Internet, potential bias may still be present. Currently the model excels at generating artistic-style 3D assets and its capability in generating photorealistic real-world objects is limited.
+                </i>
+            </p>
+            <p class="x-note">
+                <b style="line-height: 32px;">Material Disclaimer</b><br>
+                <i>
+                The materials made available on this page are provided solely for academic and research purposes in connection with the exploration of text-to-3D and image-to-3D generation technologies, as described in the publication accessible at https://arxiv.org/abs/2412.01506. These materials are not intended for commercial exploitation or use.
+If you believe that any content on this page infringes upon your intellectual property rights, including but not limited to copyright, please notify us by submitting a takedown request via email to jiaoyan (at) microsoft.com.
+                </i>
+            </p> -->
+        </div>
+        <!-- <div id="bottombar">
+            <div class="row">
+                <div><span>T<span style="font-size: 10px;">RELLIS</span>:</span> Structured 3D Latents for Scalable and Versatile 3D Generation</div>
+                <div style="display: flex; flex-direction: row; gap: 8px;">
+                    <a href="https://github.com/microsoft/TRELLIS/issues">Contact Us on GitHub</a>
+                    <span style="width: 1px; background-color: rgba(255, 255, 255, 0.7);"></span>
+                    <a href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy & Cookies</a>
+                    <span style="width: 1px; background-color: rgba(255, 255, 255, 0.7);"></span>
+                    <a href="https://go.microsoft.com/fwlink/?linkid=2259814">Consumer Health Privacy</a>
+                    <span style="width: 1px; background-color: rgba(255, 255, 255, 0.7);"></span>
+                    <a href="https://go.microsoft.com/fwlink/?LinkID=246338">Terms of Use</a>
+                    <span style="width: 1px; background-color: rgba(255, 255, 255, 0.7);"></span>
+                    <a href="https://go.microsoft.com/fwlink/?linkid=2196228">Trademarks</a>
+                    <span style="width: 1px; background-color: rgba(255, 255, 255, 0.7);"></span>
+                    <span>© 2025 Microsoft</span>
+                </div>
+            </div>
+        </div> -->
+    <div id="imageModal" 
+    style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.85); justify-content:center; align-items:center; cursor: zoom-out;">
+    <img id="modalImg" style="max-width:90%; max-height:85%; border-radius:12px; box-shadow:0 0 20px rgba(255,255,255,0.2);">
+    </div>
+    
+    <script>
+    function showImageModal(src, alt) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
+        modal.style.display = "flex";
+        modalImg.src = src;
+        modalImg.alt = alt;
+    }
+    
+    document.getElementById("imageModal").addEventListener("click", () => {
+        document.getElementById("imageModal").style.display = "none";
+    });
+    
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            document.getElementById("imageModal").style.display = "none";
+        }
+    });
+    </script>
+    </body>
+</html>
