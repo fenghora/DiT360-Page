@@ -35,7 +35,7 @@
                 <div><a class="link">Dizhe Zhang</a><sup>1*</sup></div>
                 <div><a class="link"> Xiangtai Li</a><sup>3</sup></div>
                 <div><a class="link">Bo Du</a><sup>4</sup></div>
-                <div><a class="link" href="https://scholar.google.com.hk/citations?user=SSI90d4AAAAJ">Lu Qi</a><sup>1,4✉</sup></div>
+                <div><a class="link" href="http://www.luqi.info/">Lu Qi</a><sup>1,4✉</sup></div>
             </div>
             <div id="institution">
                 <div><sup>1</sup><a class="link" href="https://www.insta360.com/cn/">Insta360 Research</a></div>
@@ -194,13 +194,95 @@ If you believe that any content on this page infringes upon your intellectual pr
                 </div>
             </div>
         </div> -->
-    <div id="imageModal" 
+    <!-- <div id="imageModal" 
     style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.85); justify-content:center; align-items:center; cursor: zoom-out;">
     <img id="modalImg" style="max-width:90%; max-height:85%; border-radius:12px; box-shadow:0 0 20px rgba(255,255,255,0.2);">
+    </div> -->
+    <div id="imageModal" 
+            style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%;
+                background:rgba(0,0,0,0.85); justify-content:center; align-items:center; cursor: zoom-out;">
+        <img id="modalImg" style="max-width:80%; max-height:75%; border-radius:12px; box-shadow:0 0 20px rgba(255,255,255,0.2);">
+        <!-- 左右箭头 -->
+        <div id="prevArrow" onclick="showPrevImage()"
+        style="position:absolute; left:3%; top:50%; transform:translateY(-50%);
+               color:white; font-size:64px; opacity:1; cursor:pointer; user-select:none; z-index:10000;">&#10094;</div>
+        <div id="nextArrow" onclick="showNextImage()"
+                style="position:absolute; right:3%; top:50%; transform:translateY(-50%);
+                    color:white; font-size:64px; opacity:1; cursor:pointer; user-select:none; z-index:10000;">&#10095;</div>
+   
     </div>
     
     <script>
+        let modalIndex = -1;
+        let modalItems = []; // {src, alt} 列表
+
+        // 显示单张图片（也把 modalItems 设为单元素，避免 prev/next 越界）
+        function showImageModal(src, alt) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImg");
+            modal.style.display = "flex";
+            modalImg.src = src;
+            modalImg.alt = alt || '';
+            updateArrowsVisibility(); // 根据 modalItems.length 控制箭头
+        }
+
+        // 从某个 carousel 打开（只在该 carousel 的 items 范围内切换）
+        function showImageModalFromCarousel(carousel_id, item_idx) {
+            const carousel = carousel_objects[carousel_id];
+            if (!carousel) return;
+            // 用 carousel.items 构造 modalItems（不会跨页面）
+            modalItems = carousel.items.map(it => {
+                let base = '';
+                if (carousel_id.includes('txt2pano_in')) base = 'assets/txt2pano_in/';
+                else if (carousel_id.includes('txt2pano_out')) base = 'assets/txt2pano_out/';
+                // 如果你未来有更多 carousel 类型，可以在这里扩展 base 路径
+                return { src: base + it.image, alt: it.prompt || '' };
+            });
+            // 防止越界（clamp）
+            modalIndex = Math.max(0, Math.min(item_idx, modalItems.length - 1));
+            showImageModal(modalItems[modalIndex].src, modalItems[modalIndex].alt);
+        }
+
+        // 下一张 / 上一张（在 modalItems 范围内循环）
+        function showNextImage() {
+            if (!modalItems || modalItems.length === 0) return;
+            modalIndex = (modalIndex + 1) % modalItems.length;
+            const img = modalItems[modalIndex];
+            showImageModal(img.src, img.alt);
+        }
+
+        function showPrevImage() {
+            if (!modalItems || modalItems.length === 0) return;
+            modalIndex = (modalIndex - 1 + modalItems.length) % modalItems.length;
+            const img = modalItems[modalIndex];
+            showImageModal(img.src, img.alt);
+        }
+
+        // 点击 overlay 空白区域关闭
+        document.getElementById("imageModal").addEventListener("click", (e) => {
+            if (e.target.id === "imageModal") document.getElementById("imageModal").style.display = "none";
+        });
+
+        // 键盘控制：Esc, ←, → 
+        document.addEventListener("keydown", (e) => {
+            const modal = document.getElementById("imageModal");
+            if (modal.style.display !== "flex") return;
+            if (e.key === "Escape") modal.style.display = "none";
+            else if (e.key === "ArrowRight") showNextImage();
+            else if (e.key === "ArrowLeft") showPrevImage();
+        });
+
+        // 根据 modalItems 长度控制箭头的显示（单图时隐藏）
+        function updateArrowsVisibility() {
+            const prev = document.getElementById('prevArrow');
+            const next = document.getElementById('nextArrow');
+            if (!prev || !next) return;
+            if (modalItems.length <= 1) { prev.style.display = 'none'; next.style.display = 'none'; }
+            else { prev.style.display = 'block'; next.style.display = 'block'; }
+        }
+    </script>
+    <!-- <script>
     function showImageModal(src, alt) {
         const modal = document.getElementById("imageModal");
         const modalImg = document.getElementById("modalImg");
@@ -218,6 +300,6 @@ If you believe that any content on this page infringes upon your intellectual pr
             document.getElementById("imageModal").style.display = "none";
         }
     });
-    </script>
+    </script> -->
     </body>
 </html>
